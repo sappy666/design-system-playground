@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Design System Playground</title>
+<meta name="description" content="Editor visual de paletas OKLCH, escalas tipográficas, espaciado y componentes, con exportación a CSS, Tailwind, JSON, PNG y Figma.">
+<meta name="theme-color" content="#13151A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<script src="vendor/html-to-image.js"></script>
+<script src="vendor/jszip.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="logo">
+      <h1>Design System <em>Playground</em></h1>
+      <small id="saveState">Guardado local</small>
+    </div>
+    <div class="top-actions">
+      <select id="preset" class="select" aria-label="Preset"></select>
+      <button class="btn" id="resetBtn" type="button" title="Volver a los valores del preset">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4"/><path d="M2.5 2.5v3h3"/></svg>Restablecer</button>
+      <div class="menu-wrap">
+        <button class="btn btn--solid" id="exportBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="exportMenu">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 11v2.5h11V11"/></svg>Exportar</button>
+        <div class="menu" id="exportMenu" role="menu" hidden>
+          <p class="menu-note" id="frameNote" hidden>Estás en la vista previa de Claude, donde las descargas están bloqueadas. Las opciones de copiar sí funcionan; para descargar, usa la app desplegada.</p>
+          <div class="menu-g">Imagen</div>
+          <button class="menu-i" role="menuitem" data-act="png-view"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="3" width="14" height="12" rx="1.5"/><circle cx="6.5" cy="7" r="1.5"/><path d="m2.5 13 4-4 3 3 2-2 4 4"/></svg><b>PNG de la vista actual</b><span>Captura en alta resolución (2×)</span></button>
+          <button class="menu-i" role="menuitem" data-act="png-sheet"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="2" width="12" height="14" rx="1.5"/><path d="M6 6h6M6 9h6M6 12h3"/></svg><b>PNG de la hoja de estilo</b><span>UI kit completo en una lámina</span></button>
+          <div class="menu-g">Figma</div>
+          <button class="menu-i" role="menuitem" data-act="svg-sheet"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2h3v5H6a2.5 2.5 0 0 1 0-5ZM9 2h3a2.5 2.5 0 0 1 0 5H9ZM6 7h3v5H6a2.5 2.5 0 0 1 0-5ZM12 7a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM6 12h3v2.5A2.5 2.5 0 1 1 6 12Z"/></svg><b>Hoja editable (.svg)</b><span>Arrástrala a Figma: capas y textos editables</span></button>
+          <button class="menu-i" role="menuitem" data-act="copy-svg"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="6" y="6" width="9" height="9" rx="1.5"/><path d="M12 6V4.5A1.5 1.5 0 0 0 10.5 3h-6A1.5 1.5 0 0 0 3 4.5v6A1.5 1.5 0 0 0 4.5 12H6"/></svg><b>Copiar SVG para pegar</b><span>Pega con Cmd/Ctrl + V en el lienzo de Figma</span></button>
+          <button class="menu-i" role="menuitem" data-act="tokens-studio"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3H4.5A1.5 1.5 0 0 0 3 4.5v3L2 9l1 1.5v3A1.5 1.5 0 0 0 4.5 15H6M12 3h1.5A1.5 1.5 0 0 1 15 4.5v3L16 9l-1 1.5v3a1.5 1.5 0 0 1-1.5 1.5H12"/></svg><b>Tokens para Tokens Studio (.json)</b><span>Sets global, claro y oscuro → variables y estilos</span></button>
+          <div class="menu-g">Código</div>
+          <button class="menu-i" role="menuitem" data-act="zip"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 2h7l3 3v11H4Z"/><path d="M8 2v2h1v2H8v2h1v2H8"/></svg><b>Paquete completo (.zip)</b><span>CSS, Tailwind, JSON DTCG, Tokens Studio, SVG y PNG</span></button>
+          <button class="menu-i" role="menuitem" data-act="css"><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6.5 5 3 9l3.5 4M11.5 5 15 9l-3.5 4"/></svg><b>tokens.css</b><span>Variables, modo oscuro y componentes base</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="viewswitch">
+    <div class="seg" role="radiogroup" aria-label="Vista móvil">
+      <label><input type="radio" name="mview" value="edit"><span>Editar</span></label>
+      <label><input type="radio" name="mview" value="view" checked><span>Vista previa</span></label>
+    </div>
+  </div>
+
+  <div class="main">
+    <aside class="panel" aria-label="Propiedades del sistema">
+      <section class="sec">
+        <h2>Marca <span>Identidad</span></h2>
+        <div class="ctl">
+          <label for="name">Nombre del sistema</label>
+          <input id="name" class="field-txt full" type="text" maxlength="40" data-path="name" autocomplete="off">
+          <p class="err" id="nameErr" hidden>Escribe un nombre para exportar los tokens.</p>
+        </div>
+        <div class="ctl">
+          <label class="full">Colores de marca</label>
+          <div class="brandchips" id="brandChips"></div>
+          <div class="addrow">
+            <input id="brandAdd" class="field-txt mono" type="text" maxlength="7" placeholder="#F25A3F" aria-label="Agregar color de marca">
+            <button class="btn" id="brandAddBtn" type="button">Agregar</button>
+          </div>
+          <p class="err" id="brandErr" hidden>Usa el formato #RRGGBB.</p>
+        </div>
+      </section>
+
+      <section class="sec">
+        <h2>Color <span>OKLCH</span></h2>
+        <p class="sub">Primario</p>
+        <div class="ctl">
+          <div class="hexrow"><div class="chip-swatch" id="pChip"></div>
+            <input id="pHex" class="field-txt mono" type="text" maxlength="7" aria-label="Hex del color primario" placeholder="#2E6B4F" data-hex="primary"></div>
+          <p class="err" id="pHexErr" hidden>Usa el formato #RRGGBB, por ejemplo #2E6B4F.</p>
+          <p class="note" id="pAnchorNote" hidden></p>
+        </div>
+        <div class="ctl"><label for="pH">Tono</label><output data-out="primary.h" data-fmt="deg"></output><input id="pH" class="tall hue" type="range" min="0" max="360" step="1" data-path="primary.h"></div>
+        <div class="ctl"><label for="pC">Croma</label><output data-out="primary.c" data-fmt="c"></output><input id="pC" class="tall" type="range" min="0" max="0.3" step="0.005" data-path="primary.c"></div>
+
+        <p class="sub">Acento</p>
+        <div class="ctl">
+          <div class="hexrow"><div class="chip-swatch" id="aChip"></div>
+            <input id="aHex" class="field-txt mono" type="text" maxlength="7" aria-label="Hex del color de acento" placeholder="#D08A2E" data-hex="accent"></div>
+          <p class="err" id="aHexErr" hidden>Usa el formato #RRGGBB, por ejemplo #D08A2E.</p>
+          <p class="note" id="aAnchorNote" hidden></p>
+        </div>
+        <div class="ctl"><label for="aH">Tono</label><output data-out="accent.h" data-fmt="deg"></output><input id="aH" class="tall hue" type="range" min="0" max="360" step="1" data-path="accent.h"></div>
+        <div class="ctl"><label for="aC">Croma</label><output data-out="accent.c" data-fmt="c"></output><input id="aC" class="tall" type="range" min="0" max="0.3" step="0.005" data-path="accent.c"></div>
+
+        <p class="sub">Neutros y fondo</p>
+        <div class="ctl"><label for="nH">Tono</label><output data-out="neutral.h" data-fmt="deg"></output><input id="nH" class="tall hue" type="range" min="0" max="360" step="1" data-path="neutral.h"></div>
+        <div class="ctl"><label for="nC">Calidez del fondo</label><output data-out="neutral.c" data-fmt="c"></output><input id="nC" type="range" min="0" max="0.05" step="0.001" data-path="neutral.c"></div>
+      </section>
+
+      <section class="sec">
+        <h2>Tipografía <span>Escala modular</span></h2>
+        <div class="row2">
+          <div class="ctl"><label for="fD" class="full">Títulos</label><select id="fD" class="select full" data-path="type.display"></select></div>
+          <div class="ctl"><label for="fB" class="full">Cuerpo</label><select id="fB" class="select full" data-path="type.body"></select></div>
+        </div>
+        <div class="ctl">
+          <label for="base">Tamaño base (px)</label>
+          <input id="base" type="number" min="12" max="22" step="1" class="field-txt" style="width:76px;font-family:var(--f-mono)" data-path="type.base">
+          <p class="err" id="baseErr" hidden>Usa un valor entre 12 y 22 px.</p>
+        </div>
+        <div class="ctl">
+          <label for="ratio" class="full">Proporción</label>
+          <select id="ratio" class="select full" data-path="type.ratio" data-num>
+            <option value="1.125">1.125 · Segunda mayor</option>
+            <option value="1.2">1.200 · Tercera menor</option>
+            <option value="1.25">1.250 · Tercera mayor</option>
+            <option value="1.333">1.333 · Cuarta justa</option>
+            <option value="1.414">1.414 · Cuarta aumentada</option>
+            <option value="1.5">1.500 · Quinta justa</option>
+            <option value="1.618">1.618 · Proporción áurea</option>
+          </select>
+        </div>
+        <div class="row2">
+          <div class="ctl"><label for="hw" class="full">Peso títulos</label>
+            <select id="hw" class="select full" data-path="type.headWeight" data-num>
+              <option value="400">400</option><option value="500">500</option><option value="600">600</option><option value="700">700</option><option value="800">800</option>
+            </select></div>
+          <div class="ctl"><label for="bw" class="full">Peso botones</label>
+            <select id="bw" class="select full" data-path="button.weight" data-num>
+              <option value="500">500</option><option value="600">600</option><option value="700">700</option>
+            </select></div>
+        </div>
+        <div class="ctl"><label for="tr">Tracking títulos</label><output data-out="type.tracking" data-fmt="em"></output><input id="tr" type="range" min="-0.04" max="0.02" step="0.005" data-path="type.tracking"></div>
+        <div class="ctl"><label for="lh">Interlineado cuerpo</label><output data-out="type.lh" data-fmt="n2"></output><input id="lh" type="range" min="1.3" max="1.8" step="0.05" data-path="type.lh"></div>
+      </section>
+
+      <section class="sec">
+        <h2>Espacio y forma <span>Ritmo</span></h2>
+        <div class="ctl"><label class="full">Unidad base</label>
+          <div class="seg full" role="radiogroup" aria-label="Unidad base">
+            <label><input type="radio" name="unit" value="4" data-path="space.unit" data-num><span>4 px</span></label>
+            <label><input type="radio" name="unit" value="8" data-path="space.unit" data-num><span>8 px</span></label>
+          </div></div>
+        <div class="ctl"><label for="rad">Radio de esquinas</label><output data-out="shape.radius" data-fmt="px"></output><input id="rad" type="range" min="0" max="24" step="1" data-path="shape.radius"></div>
+        <div class="ctl"><label class="full">Grosor de borde</label>
+          <div class="seg full" role="radiogroup" aria-label="Grosor de borde">
+            <label><input type="radio" name="bwid" value="1" data-path="shape.border" data-num><span>1 px</span></label>
+            <label><input type="radio" name="bwid" value="2" data-path="shape.border" data-num><span>2 px</span></label>
+          </div></div>
+      </section>
+
+      <section class="sec">
+        <h2>Botones <span>Componente</span></h2>
+        <div class="ctl"><label class="full">Densidad</label>
+          <div class="seg full" role="radiogroup" aria-label="Densidad">
+            <label><input type="radio" name="dens" value="compact" data-path="button.density"><span>Compacta</span></label>
+            <label><input type="radio" name="dens" value="regular" data-path="button.density"><span>Regular</span></label>
+            <label><input type="radio" name="dens" value="comfortable" data-path="button.density"><span>Amplia</span></label>
+          </div></div>
+        <label class="toggle" for="upc">Texto en mayúsculas<input id="upc" type="checkbox" data-path="button.upper"></label>
+        <label class="toggle" for="pill">Forma píldora<input id="pill" type="checkbox" data-path="button.pill"></label>
+      </section>
+    </aside>
+
+    <main class="stage">
+      <div class="stagebar">
+        <div class="tabs" role="tablist" aria-label="Vistas">
+          <button class="tab" role="tab" data-tab="comp" aria-selected="true">Componentes</button>
+          <button class="tab" role="tab" data-tab="sheet" aria-selected="false">Hoja de estilo</button>
+          <button class="tab" role="tab" data-tab="color" aria-selected="false">Color y contraste</button>
+          <button class="tab" role="tab" data-tab="scale" aria-selected="false">Escalas</button>
+          <button class="tab" role="tab" data-tab="tokens" aria-selected="false">Tokens</button>
+        </div>
+        <div class="icogroup" aria-label="Tema de la vista previa">
+          <button class="icobtn" data-mode="light" aria-pressed="true" title="Tema claro"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/></svg></button>
+          <button class="icobtn" data-mode="dark" aria-pressed="false" title="Tema oscuro"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7Z"/></svg></button>
+        </div>
+        <div class="icogroup" aria-label="Ancho de la vista previa">
+          <button class="icobtn" data-vp="desktop" aria-pressed="true" title="Escritorio"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="9" rx="1"/><path d="M5.5 14h5"/></svg></button>
+          <button class="icobtn" data-vp="mobile" aria-pressed="false" title="Móvil 390 px"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.5" y="1.5" width="7" height="13" rx="1.5"/><path d="M7 12.5h2"/></svg></button>
+        </div>
+      </div>
+
+      <div class="scroller">
+        <div class="frame" id="frame" data-vp="desktop">
+
+          <div class="view" data-view="comp">
+            <div class="ds" id="ds" data-mode="light" data-capture>
+              <nav class="ds-nav">
+                <span class="ds-brand" data-bind="name"></span>
+                <div class="ds-links"><a href="#comp">Servicios</a><a href="#comp">Proyectos</a><a href="#comp">Estudio</a></div>
+                <button class="ds-btn ds-btn--primary ds-btn--sm" type="button">Agendar reunión</button>
+              </nav>
+              <section class="ds-hero">
+                <span class="ds-eyebrow">Sistema de diseño · v1.0</span>
+                <h2 class="ds-h1">Interfaces coherentes, desde el primer token hasta el último componente.</h2>
+                <p class="ds-lead">Cada decisión de color, tipografía y espaciado vive en un solo lugar. Cambia una variable y todo el producto responde.</p>
+                <div class="ds-actions">
+                  <button class="ds-btn ds-btn--primary ds-btn--lg" type="button">Comenzar proyecto
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+                  <button class="ds-btn ds-btn--secondary ds-btn--lg" type="button">Ver casos</button>
+                </div>
+              </section>
+
+              <div class="ds-body">
+                <form class="ds-card" id="dsForm" novalidate>
+                  <div><h3>Solicita una propuesta</h3><p class="ds-meta">Formulario de ejemplo con validación real.</p></div>
+                  <div>
+                    <label class="ds-label" for="dsName">Nombre</label>
+                    <input class="ds-input" id="dsName" type="text" placeholder="Camila Rojas">
+                    <p class="ds-help" id="dsNameHelp">Como quieres que te llamemos.</p>
+                  </div>
+                  <div>
+                    <label class="ds-label" for="dsEmail">Correo</label>
+                    <input class="ds-input" id="dsEmail" type="email" placeholder="camila@estudio.cl">
+                    <p class="ds-help" id="dsEmailHelp">Responderemos en 48 horas hábiles.</p>
+                  </div>
+                  <label class="ds-check" for="dsNews"><input type="checkbox" id="dsNews" checked>Recibir el boletín mensual</label>
+                  <div class="ds-actions">
+                    <button class="ds-btn ds-btn--primary" type="submit">Enviar solicitud</button>
+                    <button class="ds-btn ds-btn--ghost" type="reset">Limpiar</button>
+                  </div>
+                  <div class="ds-alert ds-alert--success" id="dsOk" role="status" hidden>
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6.5"/><path d="m5 8 2 2 4-4"/></svg>
+                    <div><b>Solicitud lista</b>El formulario validó correctamente (envío simulado).</div>
+                  </div>
+                </form>
+
+                <div class="ds-card">
+                  <div><h3>Botones</h3><p class="ds-meta">Variantes, tamaños y estado deshabilitado. Prueba hover y Tab.</p></div>
+                  <div class="ds-btnmatrix">
+                    <div class="ds-btnrow"><small>primary</small><button class="ds-btn ds-btn--primary ds-btn--sm" type="button">Pequeño</button><button class="ds-btn ds-btn--primary" type="button">Regular</button><button class="ds-btn ds-btn--primary" type="button" disabled>Inactivo</button></div>
+                    <div class="ds-btnrow"><small>secondary</small><button class="ds-btn ds-btn--secondary ds-btn--sm" type="button">Pequeño</button><button class="ds-btn ds-btn--secondary" type="button">Regular</button><button class="ds-btn ds-btn--secondary" type="button" disabled>Inactivo</button></div>
+                    <div class="ds-btnrow"><small>ghost</small><button class="ds-btn ds-btn--ghost ds-btn--sm" type="button">Pequeño</button><button class="ds-btn ds-btn--ghost" type="button">Regular</button></div>
+                    <div class="ds-btnrow"><small>accent</small><button class="ds-btn ds-btn--accent" type="button">Destacar</button><small style="width:auto">danger</small><button class="ds-btn ds-btn--danger" type="button">Eliminar</button></div>
+                  </div>
+                </div>
+
+                <div class="ds-card">
+                  <div><h3>Estados y feedback</h3><p class="ds-meta">Badges y alertas semánticas.</p></div>
+                  <div class="ds-badges">
+                    <span class="ds-badge">En diseño</span>
+                    <span class="ds-badge ds-badge--success">Publicado</span>
+                    <span class="ds-badge ds-badge--warning">En revisión</span>
+                    <span class="ds-badge ds-badge--danger">Bloqueado</span>
+                    <span class="ds-badge ds-badge--outline">Borrador</span>
+                  </div>
+                  <div class="ds-alert ds-alert--warning">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2 1.5 13.5h13L8 2Z"/><path d="M8 6.5v3M8 11.5v.01"/></svg>
+                    <div><b>Revisión pendiente</b>Dos pantallas aún usan valores fuera del sistema.</div>
+                  </div>
+                  <div class="ds-alert ds-alert--danger">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v4M8 11v.01"/></svg>
+                    <div><b>Error de publicación</b>El dominio no respondió. Vuelve a intentarlo en unos minutos.</div>
+                  </div>
+                </div>
+
+                <div class="ds-card">
+                  <span class="ds-tag-accent">Recomendado</span>
+                  <div><h3>Plan Estudio</h3><p class="ds-meta">Para equipos que mantienen varias marcas.</p></div>
+                  <p class="ds-price">$89.000 <small>/ mes</small></p>
+                  <ul class="ds-list">
+                    <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 8.5 3 3 7-7"/></svg>Tokens sincronizados con el repositorio</li>
+                    <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 8.5 3 3 7-7"/></svg>Biblioteca de 40 componentes</li>
+                    <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 8.5 3 3 7-7"/></svg>Auditoría de contraste WCAG 2.2</li>
+                  </ul>
+                  <button class="ds-btn ds-btn--primary" type="button">Elegir plan</button>
+                </div>
+
+                <div class="ds-card ds-wide">
+                  <div><h3>Colores de marca en datos</h3><p class="ds-meta">Proyectos por etapa · datos de ejemplo.</p></div>
+                  <div class="ds-chart" id="dsChart"></div>
+                  <div class="ds-legend" id="dsLegend"></div>
+                </div>
+              </div>
+              <div class="ds-demo">Contenido de ejemplo · todo lo que ves usa sólo los tokens generados</div>
+            </div>
+          </div>
+
+          <div class="view" data-view="sheet" hidden>
+            <div class="panel-h"><h3>Hoja de estilo</h3><p>Lámina del UI kit en SVG nativo. Exportada a Figma, cada color, texto y botón queda como capa editable.</p></div>
+            <div class="sheetwrap" id="sheetWrap" data-capture></div>
+          </div>
+
+          <div class="view" data-view="color" hidden>
+            <div class="panel-h"><h3>Color y contraste</h3><p>Escalas generadas en OKLCH con lightness perceptual constante. Haz clic en un tono para copiar su hex.</p></div>
+            <div class="sheet" data-capture>
+              <div>
+                <div class="summary" id="contrastSummary"></div>
+                <div class="tablewrap" style="margin-top:12px"><table id="contrastTable"></table></div>
+              </div>
+              <div id="scales" style="display:grid;gap:22px"></div>
+            </div>
+          </div>
+
+          <div class="view" data-view="scale" hidden>
+            <div class="panel-h"><h3>Escalas</h3><p>Tipografía modular, ritmo de espaciado y radios derivados de tus parámetros.</p></div>
+            <div class="sheet" data-capture>
+              <div><p class="sub" style="margin:0 0 6px">Tipografía</p><div class="spec" id="typeSpec"></div></div>
+              <div><p class="sub" style="margin:0 0 10px">Espaciado</p><div class="spaces" id="spaceSpec"></div></div>
+              <div><p class="sub" style="margin:0 0 10px">Radios</p><div class="radii" id="radiusSpec"></div></div>
+            </div>
+          </div>
+
+          <div class="view" data-view="tokens" hidden>
+            <div class="panel-h"><h3>Tokens</h3><p>Listo para Astro, React, Tailwind o Figma. El CSS incluye modo oscuro y los componentes base.</p></div>
+            <div class="codebar">
+              <div class="seg" role="radiogroup" aria-label="Formato de exportación" style="min-width:min(100%,420px)">
+                <label><input type="radio" name="fmt" value="css" checked><span>CSS</span></label>
+                <label><input type="radio" name="fmt" value="tailwind"><span>Tailwind</span></label>
+                <label><input type="radio" name="fmt" value="json"><span>DTCG</span></label>
+                <label><input type="radio" name="fmt" value="studio"><span>Tokens Studio</span></label>
+              </div>
+              <div style="display:flex;gap:8px">
+                <button class="btn" id="dlBtn" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 11v2.5h11V11"/></svg>Descargar</button>
+                <button class="btn btn--solid" id="copyBtn" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>Copiar</button>
+              </div>
+            </div>
+            <pre class="code" id="code" tabindex="0" data-capture></pre>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<style id="dsVars"></style>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

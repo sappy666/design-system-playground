@@ -1,0 +1,11 @@
+{
+  "name": "design-system-playground",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Editor visual de design systems con exportación a CSS, Tailwind, DTCG, Tokens Studio, PNG y SVG para Figma.",
+  "scripts": {
+    "dev": "npx --yes serve . -l 5173",
+    "build": "echo 'Sitio estático: no requiere build'"
+  }
+}
