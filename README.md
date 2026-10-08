@@ -15,10 +15,10 @@ Los módulos ES no funcionan abriendo `index.html` con doble clic (file://); usa
 ## Desplegar en Vercel
 
 **Opción A · GitHub (recomendada)**
-1. Crea un repo y sube esta carpeta: `git init && git add . && git commit -m "Design System Playground" && git push`.
-2. En vercel.com → Add New → Project → importa el repo.
-3. Framework Preset: **Other**. Build Command: vacío. Output Directory: `.` (raíz).
-4. Deploy.
+1. Sube esta carpeta a un repositorio de GitHub.
+2. En vercel.com → Add New → Project → importa el repositorio y usa esta carpeta como **Root Directory**.
+3. Deja **Framework Preset** en **Other**. `vercel.json` ya configura el despliegue estático desde la raíz, sin comando de build.
+4. Pulsa **Deploy**. Los siguientes pushes a la rama de producción se desplegarán automáticamente.
 
 **Opción B · CLI**
 ```bash
