@@ -165,6 +165,11 @@ function renderBrand() {
     : `<p class="empty">Sin colores de marca. Agrega los hex de tu identidad.</p>`;
 }
 
+/* Las vistas ocultas solo se marcan como pendientes; se dibujan al abrirlas. */
+const VIEWS = { sheet: () => renderSheet(), color: () => renderColor(), scale: () => renderScales(), tokens: () => renderCode() };
+let stale = new Set();
+function renderView(t) { if (stale.delete(t)) VIEWS[t](); }
+
 let raf = 0, saveT = 0;
 function render() {
   cancelAnimationFrame(raf);
@@ -183,7 +188,7 @@ function render() {
       if (sc.anchorIdx != null) note.textContent = `Tu color exacto ocupa el paso ${STEPS[sc.anchorIdx]} de la escala.`;
     });
     chromaTracks(); renderBrand(); renderChart();
-    renderColor(); renderScales(); renderSheet(); renderCode();
+    stale = new Set(Object.keys(VIEWS)); renderView(tab);
     clearTimeout(saveT);
     saveT = setTimeout(() => {
       try { localStorage.setItem(LSKEY, JSON.stringify({ state, preset: presetKey })); $("saveState").textContent = "Guardado local"; }
@@ -260,16 +265,33 @@ $("resetBtn").addEventListener("click", () => {
 /* Tabs */
 function showTab(t) {
   tab = t;
-  document.querySelectorAll(".tab").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.tab === t)));
+  document.querySelectorAll(".tab").forEach((b) => {
+    const on = b.dataset.tab === t;
+    b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1;
+  });
   document.querySelectorAll(".view").forEach((v) => (v.hidden = v.dataset.view !== t));
+  renderView(t);
 }
-document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => showTab(b.dataset.tab)));
+const tabBtns = [...document.querySelectorAll(".tab")];
+tabBtns.forEach((b, i) => {
+  b.addEventListener("click", () => showTab(b.dataset.tab));
+  b.addEventListener("keydown", (e) => {
+    const n = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabBtns.length - 1 }[e.key];
+    if (n == null) return;
+    e.preventDefault();
+    const next = tabBtns[(n + tabBtns.length) % tabBtns.length];
+    showTab(next.dataset.tab); next.focus();
+  });
+});
 
-/* Modo y viewport */
+/* Modo y viewport. Los colores de la vista previa solo se animan al cambiar de tema, no al arrastrar controles. */
+let themeT = 0;
 document.querySelectorAll("button[data-mode]").forEach((b) => b.addEventListener("click", () => {
-  mode = b.dataset.mode; $("ds").dataset.mode = mode;
+  const ds = $("ds");
+  ds.classList.add("is-theming"); clearTimeout(themeT); themeT = setTimeout(() => ds.classList.remove("is-theming"), 300);
+  mode = b.dataset.mode; ds.dataset.mode = mode;
   document.querySelectorAll("button[data-mode]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-  renderSheet();
+  stale.add("sheet"); renderView(tab);
 }));
 document.querySelectorAll("button[data-vp]").forEach((b) => b.addEventListener("click", () => {
   $("frame").dataset.vp = b.dataset.vp;
@@ -309,10 +331,25 @@ $("scales").addEventListener("click", (e) => { const b = e.target.closest("[data
 function bgFor(node) {
   return getComputedStyle(node).backgroundColor !== "rgba(0, 0, 0, 0)" ? undefined : getComputedStyle(document.body).backgroundColor;
 }
+/* Librerías de exportación: se cargan al abrir el menú, no en la primera pintura. */
+const libs = {};
+function loadLib(src, global, msg) {
+  if (window[global]) return Promise.resolve(window[global]);
+  return (libs[src] ||= new Promise((res, rej) => {
+    const s = document.createElement("script");
+    s.src = src;
+    s.onload = () => (window[global] ? res(window[global]) : rej(new Error(msg)));
+    s.onerror = () => { delete libs[src]; s.remove(); rej(new Error(msg)); };
+    document.head.appendChild(s);
+  }));
+}
+const loadImageLib = () => loadLib("vendor/html-to-image.js", "htmlToImage", "La librería de imagen no cargó. Revisa tu conexión.");
+const loadZipLib = () => loadLib("vendor/jszip.min.js", "JSZip", "La librería ZIP no cargó. Revisa tu conexión.");
+
 async function nodeToPng(node, opts = {}) {
-  if (!window.htmlToImage) throw new Error("La librería de imagen no cargó. Revisa tu conexión.");
+  const htmlToImage = await loadImageLib();
   await document.fonts.ready;
-  return window.htmlToImage.toBlob(node, { pixelRatio: 2, cacheBust: true, backgroundColor: bgFor(node), ...opts });
+  return htmlToImage.toBlob(node, { pixelRatio: 2, cacheBust: true, backgroundColor: bgFor(node), ...opts });
 }
 async function sheetPng() {
   const { svg, width, height } = buildSheet(sys, state, mode);
@@ -336,8 +373,8 @@ const ACTIONS = {
   "tokens-studio"() { download(`${slug(state.name)}-tokens-studio.json`, exportTokensStudio(sys, state), "application/json"); },
   css() { download(`${slug(state.name)}-tokens.css`, exportCSS(sys, state), "text/css"); },
   async zip() {
-    if (!window.JSZip) throw new Error("La librería ZIP no cargó. Revisa tu conexión.");
-    const n = slug(state.name), z = new window.JSZip();
+    const JSZip = await loadZipLib();
+    const n = slug(state.name), z = new JSZip();
     z.file("tokens.css", exportCSS(sys, state));
     z.file("tailwind.config.js", exportTailwind(sys, state));
     z.file("tokens.dtcg.json", exportDTCG(sys, state));
@@ -353,9 +390,23 @@ const menu = $("exportMenu"), exportBtn = $("exportBtn");
 $("frameNote").hidden = !FRAMED;
 function openMenu(open) {
   menu.hidden = !open; exportBtn.setAttribute("aria-expanded", String(open));
-  if (open) menu.querySelector(".menu-i").focus();
+  if (open) {
+    menu.querySelector(".menu-i").focus();
+    loadImageLib().catch(() => {}); loadZipLib().catch(() => {});
+  }
 }
+const menuItems = [...menu.querySelectorAll(".menu-i")];
+menuItems.forEach((it) => (it.tabIndex = -1));
 exportBtn.addEventListener("click", () => openMenu(menu.hidden));
+exportBtn.addEventListener("keydown", (e) => { if (e.key === "ArrowDown" && menu.hidden) { e.preventDefault(); openMenu(true); } });
+menu.addEventListener("keydown", (e) => {
+  if (e.key === "Tab") { openMenu(false); return; }
+  const i = menuItems.indexOf(document.activeElement);
+  const n = { ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: menuItems.length - 1 }[e.key];
+  if (n == null) return;
+  e.preventDefault();
+  menuItems[(n + menuItems.length) % menuItems.length].focus();
+});
 document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest(".menu-wrap")) openMenu(false); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { openMenu(false); exportBtn.focus(); } });
 menu.addEventListener("click", async (e) => {

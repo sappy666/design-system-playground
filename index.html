@@ -11,8 +11,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="css/styles.css">
-<script src="vendor/html-to-image.js"></script>
-<script src="vendor/jszip.min.js"></script>
 </head>
 <body>
 <div class="app">
@@ -167,26 +165,26 @@
     <main class="stage">
       <div class="stagebar">
         <div class="tabs" role="tablist" aria-label="Vistas">
-          <button class="tab" role="tab" data-tab="comp" aria-selected="true">Componentes</button>
-          <button class="tab" role="tab" data-tab="sheet" aria-selected="false">Hoja de estilo</button>
-          <button class="tab" role="tab" data-tab="color" aria-selected="false">Color y contraste</button>
-          <button class="tab" role="tab" data-tab="scale" aria-selected="false">Escalas</button>
-          <button class="tab" role="tab" data-tab="tokens" aria-selected="false">Tokens</button>
+          <button class="tab" type="button" role="tab" id="tab-comp" data-tab="comp" aria-controls="view-comp" aria-selected="true">Componentes</button>
+          <button class="tab" type="button" role="tab" id="tab-sheet" data-tab="sheet" aria-controls="view-sheet" aria-selected="false" tabindex="-1">Hoja de estilo</button>
+          <button class="tab" type="button" role="tab" id="tab-color" data-tab="color" aria-controls="view-color" aria-selected="false" tabindex="-1">Color y contraste</button>
+          <button class="tab" type="button" role="tab" id="tab-scale" data-tab="scale" aria-controls="view-scale" aria-selected="false" tabindex="-1">Escalas</button>
+          <button class="tab" type="button" role="tab" id="tab-tokens" data-tab="tokens" aria-controls="view-tokens" aria-selected="false" tabindex="-1">Tokens</button>
         </div>
-        <div class="icogroup" aria-label="Tema de la vista previa">
-          <button class="icobtn" data-mode="light" aria-pressed="true" title="Tema claro"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/></svg></button>
-          <button class="icobtn" data-mode="dark" aria-pressed="false" title="Tema oscuro"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7Z"/></svg></button>
+        <div class="icogroup" role="group" aria-label="Tema de la vista previa">
+          <button class="icobtn" type="button" data-mode="light" aria-pressed="true" aria-label="Tema claro" title="Tema claro"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/></svg></button>
+          <button class="icobtn" type="button" data-mode="dark" aria-pressed="false" aria-label="Tema oscuro" title="Tema oscuro"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13.5 9.5A5.5 5.5 0 0 1 6.5 2.5a5.5 5.5 0 1 0 7 7Z"/></svg></button>
         </div>
-        <div class="icogroup" aria-label="Ancho de la vista previa">
-          <button class="icobtn" data-vp="desktop" aria-pressed="true" title="Escritorio"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="9" rx="1"/><path d="M5.5 14h5"/></svg></button>
-          <button class="icobtn" data-vp="mobile" aria-pressed="false" title="Móvil 390 px"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.5" y="1.5" width="7" height="13" rx="1.5"/><path d="M7 12.5h2"/></svg></button>
+        <div class="icogroup" role="group" aria-label="Ancho de la vista previa">
+          <button class="icobtn" type="button" data-vp="desktop" aria-pressed="true" aria-label="Vista de escritorio" title="Escritorio"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="9" rx="1"/><path d="M5.5 14h5"/></svg></button>
+          <button class="icobtn" type="button" data-vp="mobile" aria-pressed="false" aria-label="Vista móvil de 390 px" title="Móvil 390 px"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4.5" y="1.5" width="7" height="13" rx="1.5"/><path d="M7 12.5h2"/></svg></button>
         </div>
       </div>
 
       <div class="scroller">
         <div class="frame" id="frame" data-vp="desktop">
 
-          <div class="view" data-view="comp">
+          <div class="view" data-view="comp" id="view-comp" role="tabpanel" aria-labelledby="tab-comp">
             <div class="ds" id="ds" data-mode="light" data-capture>
               <nav class="ds-nav">
                 <span class="ds-brand" data-bind="name"></span>
@@ -279,12 +277,12 @@
             </div>
           </div>
 
-          <div class="view" data-view="sheet" hidden>
+          <div class="view" data-view="sheet" id="view-sheet" role="tabpanel" aria-labelledby="tab-sheet" tabindex="0" hidden>
             <div class="panel-h"><h3>Hoja de estilo</h3><p>Lámina del UI kit en SVG nativo. Exportada a Figma, cada color, texto y botón queda como capa editable.</p></div>
             <div class="sheetwrap" id="sheetWrap" data-capture></div>
           </div>
 
-          <div class="view" data-view="color" hidden>
+          <div class="view" data-view="color" id="view-color" role="tabpanel" aria-labelledby="tab-color" hidden>
             <div class="panel-h"><h3>Color y contraste</h3><p>Escalas generadas en OKLCH con lightness perceptual constante. Haz clic en un tono para copiar su hex.</p></div>
             <div class="sheet" data-capture>
               <div>
@@ -295,7 +293,7 @@
             </div>
           </div>
 
-          <div class="view" data-view="scale" hidden>
+          <div class="view" data-view="scale" id="view-scale" role="tabpanel" aria-labelledby="tab-scale" hidden>
             <div class="panel-h"><h3>Escalas</h3><p>Tipografía modular, ritmo de espaciado y radios derivados de tus parámetros.</p></div>
             <div class="sheet" data-capture>
               <div><p class="sub" style="margin:0 0 6px">Tipografía</p><div class="spec" id="typeSpec"></div></div>
@@ -304,7 +302,7 @@
             </div>
           </div>
 
-          <div class="view" data-view="tokens" hidden>
+          <div class="view" data-view="tokens" id="view-tokens" role="tabpanel" aria-labelledby="tab-tokens" hidden>
             <div class="panel-h"><h3>Tokens</h3><p>Listo para Astro, React, Tailwind o Figma. El CSS incluye modo oscuro y los componentes base.</p></div>
             <div class="codebar">
               <div class="seg" role="radiogroup" aria-label="Formato de exportación" style="min-width:min(100%,420px)">

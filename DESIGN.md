@@ -10,7 +10,7 @@ colors:
   hairline-strong: "#A9B0B9"
   ink: "#13151A"
   ink-soft: "#4F5560"
-  ink-faint: "#7D838E"
+  ink-faint: "#5E636E"
   printers-ink: "#2E2AD6"
   printers-ink-on: "#FFFFFF"
   printers-ink-wash: "#E2E1FB"
@@ -24,7 +24,7 @@ colors:
   hairline-strong-dark: "#3F444D"
   ink-dark: "#ECEEF2"
   ink-soft-dark: "#A6ACB6"
-  ink-faint-dark: "#6E747F"
+  ink-faint-dark: "#808692"
   printers-ink-dark: "#9592FF"
   printers-ink-on-dark: "#0E0F12"
   printers-ink-wash-dark: "#25244A"
@@ -179,7 +179,7 @@ Papel gris frío en cuatro tonos, tinta casi negra en tres intensidades y una so
 - **Línea fina** (#CDD2D8) y **línea marcada** (#A9B0B9): bordes, divisores y separadores de sección. La marcada aparece en hover y en el riel del interruptor.
 - **Tinta** (#13151A): texto principal, contorno del pulgar de los sliders y fondo de la opción seleccionada en controles segmentados y del toast.
 - **Tinta suave** (#4F5560): etiquetas de control y texto secundario (6.3–7.5:1).
-- **Tinta tenue** (#7D838E): anotaciones mono, encabezados de tabla y pestañas inactivas.
+- **Tinta tenue** (#5E636E / #808692): anotaciones mono, encabezados de tabla, pestañas inactivas y descripciones del menú. Está calibrada para dar al menos 4.5:1 sobre todos los papeles, incluida la mesa.
 
 ### Semantic
 - **Verde de prueba** (#1D7A46 / #5BC98A) y **rojo de prueba** (#B42318 / #FF8A80): solo para resultados de auditoría (píldoras PASA/FALLA), errores de validación y el hover de borrar en los chips de marca. Las píldoras usan el color al 16% como fondo y el color pleno como texto.
@@ -204,13 +204,15 @@ Papel gris frío en cuatro tonos, tinta casi negra en tres intensidades y una so
 - **Body** (400, 14px, 1.5): texto base de la app. Las descripciones se limitan a 56ch.
 - **Control** (600, 13px): botones, pestañas, selects y opciones segmentadas.
 - **Label** (700, 11px, 0.09em, mayúsculas): subgrupos del panel, grupos del menú y encabezados de tabla.
-- **Annotation** (mono 400, 10–11px, 0.04–0.08em, mayúsculas): subtítulos de sección, el estado "Guardado local" y metadatos de escala.
+- **Annotation** (mono 400, 11px, 0.04–0.08em, mayúsculas): subtítulos de sección, el estado "Guardado local" y metadatos de escala.
 - **Value** (mono 400, 11.5px, cifras tabulares): lecturas de sliders, ratios de contraste y valores hex.
 
 ### Named Rules
 **The Specimen Title Rule.** Todo título de sección del panel va en Cormorant itálica con una anotación mono a la derecha. Esa pareja es la firma del cuaderno; no se reemplaza por sans en negrita.
 
 **The Measured Value Rule.** Todo número que el usuario lee como medida (px, rem, ratios, hex, porcentajes) va en mono con cifras tabulares.
+
+**The 11px Floor Rule.** Ningún texto funcional del editor baja de 11px, ni siquiera las anotaciones en mayúsculas espaciadas. Si algo no cabe, se reduce el contenido o se cambia la cuadrícula, no la letra.
 
 ## Layout
 
@@ -219,6 +221,8 @@ Es una herramienta de dos planos. En escritorio hay una cuadrícula de `340px | 
 El ritmo del panel es de secciones con 18px arriba y 20px a los lados, separadas por línea fina y con 14px entre controles. Los controles van en una cuadrícula de etiqueta y valor (`1fr auto`), y los pares se ponen lado a lado con 10px de separación. El lienzo tiene 28px arriba y 24px a los lados.
 
 Hay dos cortes principales. A 900px o menos, la cuadrícula pasa a una sola columna y aparece un conmutador fijo "Editar / Vista previa" que muestra uno de los dos planos. Los márgenes bajan a 16px. A 640px o menos, el menú de exportación pasa a posición fija con 16px de margen a cada lado.
+
+Con puntero táctil (`pointer:coarse`), los controles crecen a 44px de alto (botones, selects, campos, pestañas, opciones segmentadas, interruptores) y el pulgar de los sliders a 24px, sin cambiar la densidad que se ve con ratón. Las muestras de color pasan de 11 a 6 columnas por debajo de 700px de marco, y a 4 por debajo de 520px.
 
 ## Elevation & Depth
 
@@ -267,13 +271,15 @@ Los controles deben sentirse **amables y juguetones**: invitan a moverlos y resp
 ### Navigation (pestañas del escenario)
 - **Style:** texto de 13px y peso 600 en tinta tenue, sin fondo. En hover pasa a tinta.
 - **Active:** papel de panel con anillo interior de línea fina y texto en tinta.
+- **Teclado:** patrón de pestañas ARIA completo. Solo la pestaña activa entra en el orden de Tab; las flechas, Inicio y Fin cambian de vista.
 
 ### Export Menu
 - **Style:** panel de 320px, 10px de radio y la única sombra flotante. Los grupos llevan etiqueta en mayúsculas espaciadas.
 - **Items:** icono de 18px y dos líneas (título de 13px y peso 600, descripción de 12px en tinta tenue). En hover y foco, fondo en lavado de tinta.
+- **Teclado:** al abrirse, el foco va al primer ítem. Las flechas, Inicio y Fin lo recorren, Tab lo cierra y Escape lo cierra devolviendo el foco a Exportar.
 
 ### Contrast Pills (firma)
-Las píldoras mono de 10.5px y peso 700 con el resultado de la auditoría WCAG: fondo verde o rojo de prueba al 16%, texto en el color pleno. Son la prueba visible de que el contraste se mide mientras se edita.
+Las píldoras mono de 11px y peso 700 con el resultado de la auditoría WCAG: fondo verde o rojo de prueba al 16%, texto en el color pleno. Son la prueba visible de que el contraste se mide mientras se edita.
 
 ### Toast
 Una píldora de tinta con texto de papel, centrada abajo y por encima del área segura. Aparece subiendo 20px con fundido (0.2–0.25s).
@@ -292,5 +298,6 @@ Una píldora de tinta con texto de papel, centrada abajo y por encima del área 
 - **Don't** dejar que estilos del editor entren en la vista previa: dentro de `.ds` solo se usan variables `--ds-*`.
 - **Don't** agregar un segundo color de acento al editor ni teñir el papel y la mesa que rodean la vista previa.
 - **Don't** usar sombras proyectadas en paneles, láminas o tarjetas del editor.
-- **Don't** usar la tinta tenue (#7D838E) para texto que el usuario necesita leer: sobre papel da solo 3.2–3.8:1 y no pasa WCAG AA en tamaños pequeños. Hoy se usa así en anotaciones de 10.5–11px; es deuda conocida, no un patrón a copiar.
+- **Don't** aclarar la tinta tenue para "suavizar" una anotación: está calibrada al mínimo de 4.5:1 sobre todos los papeles en ambos temas. La jerarquía se marca con tamaño, mayúsculas y mono, no con un gris más claro.
+- **Don't** bajar ningún texto funcional de 11px.
 - **Don't** reemplazar la serif itálica de los títulos por sans en negrita para "modernizar" el editor.
