@@ -286,9 +286,10 @@ pre.code .c{color:var(--ink-3)} pre.code .p{color:var(--accent)} pre.code .v{col
 .sheetwrap svg{width:100%;height:auto;display:block}
 
 /* ---------- Gráfico de ejemplo en la vista previa ---------- */
-.ds-chart{display:flex;gap:var(--ds-space-2);align-items:flex-end;height:150px}
-.ds-bar{flex:1;height:100%;border-radius:999px;position:relative;overflow:hidden;min-width:0}
-.ds-bar span{position:absolute;left:0;right:0;bottom:0;border-radius:999px}
+.ds-chart{display:flex;justify-content:space-around;gap:var(--ds-space-3);height:180px;padding-top:4px;border-bottom:1px solid var(--ds-border)}
+.ds-bar{flex:1;max-width:44px;min-width:0;height:100%;position:relative;border-radius:min(var(--ds-r-sm),8px) min(var(--ds-r-sm),8px) 0 0;background:color-mix(in srgb, var(--c) 16%, transparent)}
+.ds-bar-fill{position:absolute;left:0;right:0;bottom:0;height:var(--v);background:var(--c);border-radius:inherit}
+.ds-bar-val{position:absolute;left:50%;bottom:calc(var(--v) + 4px);transform:translateX(-50%);font-size:var(--ds-text-xs);font-weight:600;font-variant-numeric:tabular-nums;color:var(--ds-fg);white-space:nowrap;line-height:1.2}
 .ds-legend{display:flex;flex-wrap:wrap;gap:var(--ds-space-2) var(--ds-space-4);font-size:var(--ds-text-xs);color:var(--ds-muted)}
 .ds-legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
 @media (max-width:640px){

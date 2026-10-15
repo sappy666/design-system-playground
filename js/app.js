@@ -49,7 +49,7 @@ function renderChart() {
   const labels = ["Brief", "Diseño", "Desarrollo", "Revisión", "Publicado", "Soporte"];
   const vals = [58, 34, 82, 61, 50, 26];
   $("dsChart").innerHTML = cols.map((c, i) =>
-    `<div class="ds-bar" style="background:color-mix(in srgb, ${c} 22%, transparent)" title="${labels[i]}: ${vals[i]}%"><span style="height:${vals[i]}%;background:${c}"></span></div>`).join("");
+    `<div class="ds-bar" style="--v:${vals[i]}%;--c:${c}" title="${labels[i]}: ${vals[i]}%"><span class="ds-bar-fill"></span><b class="ds-bar-val">${vals[i]}%</b></div>`).join("");
   $("dsLegend").innerHTML = cols.map((c, i) => `<span><i style="background:${c}"></i>${labels[i]} · ${vals[i]}%</span>`).join("");
 }
 
