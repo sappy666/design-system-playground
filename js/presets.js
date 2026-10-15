@@ -18,6 +18,7 @@ export const FONTS = {
   "Barlow": { cat: "sans-serif", axis: "wght@400;500;600;700;800" },
   "Space Grotesk": { cat: "sans-serif", axis: "wght@400;500;600;700" },
   "Inter": { cat: "sans-serif", axis: "wght@400;500;600;700;800" },
+  "Fredoka": { cat: "sans-serif", axis: "wght@400;500;600;700" },
   "Syne": { cat: "sans-serif", axis: "wght@400;500;600;700;800" },
   "Unbounded": { cat: "sans-serif", axis: "wght@400;500;600;700;800" },
   "Rammetto One": { cat: "display", axis: null },
@@ -110,12 +111,12 @@ const RAW = {
   barsol: base({ label: "Bar retro verde y naranja", name: "Bar Solar",
     primary: { hex: "#1F6B3A" }, accent: { hex: "#F47A1F" }, neutral: { h: 85, c: 0.02 },
     brand: ["#1F6B3A", "#F47A1F", "#E6D9C3", "#EBEDE6"],
-    type: { display: "Rammetto One", body: "Barlow", base: 16, ratio: 1.333, lh: 1.55, headWeight: 400, tracking: 0 },
+    type: { display: "Fraunces", body: "Barlow", base: 16, ratio: 1.333, lh: 1.55, headWeight: 700, tracking: -0.02 },
     shape: { radius: 6, border: 2 }, button: { density: "regular", upper: true, pill: false, weight: 700 } }),
   flor: base({ label: "Estudio floral", name: "Estudio Flor",
     primary: { hex: "#029B77" }, accent: { hex: "#DA571E" }, neutral: { h: 70, c: 0.022 },
     brand: ["#EFE7DA", "#029B77", "#FE8CC2", "#DA571E"],
-    type: { display: "Bagel Fat One", body: "Manrope", base: 16, ratio: 1.414, lh: 1.6, headWeight: 400, tracking: -0.01 },
+    type: { display: "Fredoka", body: "Manrope", base: 16, ratio: 1.414, lh: 1.6, headWeight: 600, tracking: -0.01 },
     shape: { radius: 20, border: 1 }, button: { density: "regular", upper: false, pill: true, weight: 700 } }),
 };
 
