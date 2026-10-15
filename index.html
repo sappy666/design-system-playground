@@ -9,7 +9,8 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -60,8 +61,8 @@
           <p class="err" id="nameErr" hidden>Escribe un nombre para exportar los tokens.</p>
         </div>
         <div class="ctl">
-          <label class="full">Colores de marca</label>
-          <div class="brandchips" id="brandChips"></div>
+          <span class="lbl full" id="brandLbl">Colores de marca</span>
+          <div class="brandchips" id="brandChips" role="group" aria-labelledby="brandLbl"></div>
           <div class="addrow">
             <input id="brandAdd" class="field-txt mono" type="text" maxlength="7" placeholder="#F25A3F" aria-label="Agregar color de marca">
             <button class="btn" id="brandAddBtn" type="button">Agregar</button>
@@ -136,14 +137,14 @@
 
       <section class="sec">
         <h2>Espacio y forma <span>Ritmo</span></h2>
-        <div class="ctl"><label class="full">Unidad base</label>
-          <div class="seg full" role="radiogroup" aria-label="Unidad base">
+        <div class="ctl"><span class="lbl full" id="unitLbl">Unidad base</span>
+          <div class="seg full" role="radiogroup" aria-labelledby="unitLbl">
             <label><input type="radio" name="unit" value="4" data-path="space.unit" data-num><span>4 px</span></label>
             <label><input type="radio" name="unit" value="8" data-path="space.unit" data-num><span>8 px</span></label>
           </div></div>
         <div class="ctl"><label for="rad">Radio de esquinas</label><output data-out="shape.radius" data-fmt="px"></output><input id="rad" type="range" min="0" max="24" step="1" data-path="shape.radius"></div>
-        <div class="ctl"><label class="full">Grosor de borde</label>
-          <div class="seg full" role="radiogroup" aria-label="Grosor de borde">
+        <div class="ctl"><span class="lbl full" id="bwidLbl">Grosor de borde</span>
+          <div class="seg full" role="radiogroup" aria-labelledby="bwidLbl">
             <label><input type="radio" name="bwid" value="1" data-path="shape.border" data-num><span>1 px</span></label>
             <label><input type="radio" name="bwid" value="2" data-path="shape.border" data-num><span>2 px</span></label>
           </div></div>
@@ -151,8 +152,8 @@
 
       <section class="sec">
         <h2>Botones <span>Componente</span></h2>
-        <div class="ctl"><label class="full">Densidad</label>
-          <div class="seg full" role="radiogroup" aria-label="Densidad">
+        <div class="ctl"><span class="lbl full" id="densLbl">Densidad</span>
+          <div class="seg full" role="radiogroup" aria-labelledby="densLbl">
             <label><input type="radio" name="dens" value="compact" data-path="button.density"><span>Compacta</span></label>
             <label><input type="radio" name="dens" value="regular" data-path="button.density"><span>Regular</span></label>
             <label><input type="radio" name="dens" value="comfortable" data-path="button.density"><span>Amplia</span></label>
@@ -278,12 +279,12 @@
           </div>
 
           <div class="view" data-view="sheet" id="view-sheet" role="tabpanel" aria-labelledby="tab-sheet" tabindex="0" hidden>
-            <div class="panel-h"><h3>Hoja de estilo</h3><p>Lámina del UI kit en SVG nativo. Exportada a Figma, cada color, texto y botón queda como capa editable.</p></div>
+            <div class="panel-h"><h2>Hoja de estilo</h2><p>Lámina del UI kit en SVG nativo. Exportada a Figma, cada color, texto y botón queda como capa editable.</p></div>
             <div class="sheetwrap" id="sheetWrap" data-capture></div>
           </div>
 
           <div class="view" data-view="color" id="view-color" role="tabpanel" aria-labelledby="tab-color" hidden>
-            <div class="panel-h"><h3>Color y contraste</h3><p>Escalas generadas en OKLCH con lightness perceptual constante. Haz clic en un tono para copiar su hex.</p></div>
+            <div class="panel-h"><h2>Color y contraste</h2><p>Escalas generadas en OKLCH con lightness perceptual constante. Haz clic en un tono para copiar su hex.</p></div>
             <div class="sheet" data-capture>
               <div>
                 <div class="summary" id="contrastSummary"></div>
@@ -294,7 +295,7 @@
           </div>
 
           <div class="view" data-view="scale" id="view-scale" role="tabpanel" aria-labelledby="tab-scale" hidden>
-            <div class="panel-h"><h3>Escalas</h3><p>Tipografía modular, ritmo de espaciado y radios derivados de tus parámetros.</p></div>
+            <div class="panel-h"><h2>Escalas</h2><p>Tipografía modular, ritmo de espaciado y radios derivados de tus parámetros.</p></div>
             <div class="sheet" data-capture>
               <div><p class="sub" style="margin:0 0 6px">Tipografía</p><div class="spec" id="typeSpec"></div></div>
               <div><p class="sub" style="margin:0 0 10px">Espaciado</p><div class="spaces" id="spaceSpec"></div></div>
@@ -303,7 +304,7 @@
           </div>
 
           <div class="view" data-view="tokens" id="view-tokens" role="tabpanel" aria-labelledby="tab-tokens" hidden>
-            <div class="panel-h"><h3>Tokens</h3><p>Listo para Astro, React, Tailwind o Figma. El CSS incluye modo oscuro y los componentes base.</p></div>
+            <div class="panel-h"><h2>Tokens</h2><p>Listo para Astro, React, Tailwind o Figma. El CSS incluye modo oscuro y los componentes base.</p></div>
             <div class="codebar">
               <div class="seg" role="radiogroup" aria-label="Formato de exportación" style="min-width:min(100%,420px)">
                 <label><input type="radio" name="fmt" value="css" checked><span>CSS</span></label>

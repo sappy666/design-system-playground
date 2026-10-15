@@ -8,13 +8,14 @@ colors:
   paper-canvas: "#DCE0E4"
   hairline: "#CDD2D8"
   hairline-strong: "#A9B0B9"
+  field-line: "#80878F"
   ink: "#13151A"
   ink-soft: "#4F5560"
   ink-faint: "#5E636E"
   printers-ink: "#2E2AD6"
   printers-ink-on: "#FFFFFF"
   printers-ink-wash: "#E2E1FB"
-  proof-green: "#1D7A46"
+  proof-green: "#046D3A"
   proof-red: "#B42318"
   paper-bg-dark: "#0E0F12"
   paper-panel-dark: "#15171B"
@@ -22,6 +23,7 @@ colors:
   paper-canvas-dark: "#08090B"
   hairline-dark: "#2A2E35"
   hairline-strong-dark: "#3F444D"
+  field-line-dark: "#696F79"
   ink-dark: "#ECEEF2"
   ink-soft-dark: "#A6ACB6"
   ink-faint-dark: "#808692"
@@ -176,15 +178,18 @@ Papel gris frío en cuatro tonos, tinta casi negra en tres intensidades y una so
 - **Papel de panel** (#F6F7F8): el panel de propiedades, la cabecera, las láminas (`.sheet`) y los menús.
 - **Papel de campo** (#FFFFFF): campos, selects, botones secundarios y bloques de código. Es el papel más claro, para lo que se toca o se lee de cerca.
 - **Mesa** (#DCE0E4): el lienzo detrás de la vista previa. Es más oscuro que el papel para que la lámina del usuario se despegue sin sombra.
-- **Línea fina** (#CDD2D8) y **línea marcada** (#A9B0B9): bordes, divisores y separadores de sección. La marcada aparece en hover y en el riel del interruptor.
+- **Línea fina** (#CDD2D8) y **línea marcada** (#A9B0B9): bordes de contenedores, divisores y separadores de sección. La marcada aparece en hover de botones.
+- **Línea de control** (#80878F / #696F79): el límite de todo lo que se edita (campos, selects, controles segmentados) y el riel apagado del interruptor. Está calibrada a 3:1 contra todos los papeles, porque el campo blanco casi no se separa del panel y el borde es lo único que lo delata.
 - **Tinta** (#13151A): texto principal, contorno del pulgar de los sliders y fondo de la opción seleccionada en controles segmentados y del toast.
 - **Tinta suave** (#4F5560): etiquetas de control y texto secundario (6.3–7.5:1).
 - **Tinta tenue** (#5E636E / #808692): anotaciones mono, encabezados de tabla, pestañas inactivas y descripciones del menú. Está calibrada para dar al menos 4.5:1 sobre todos los papeles, incluida la mesa.
 
 ### Semantic
-- **Verde de prueba** (#1D7A46 / #5BC98A) y **rojo de prueba** (#B42318 / #FF8A80): solo para resultados de auditoría (píldoras PASA/FALLA), errores de validación y el hover de borrar en los chips de marca. Las píldoras usan el color al 16% como fondo y el color pleno como texto.
+- **Verde de prueba** (#046D3A / #5BC98A) y **rojo de prueba** (#B42318 / #FF8A80): solo para resultados de auditoría (píldoras PASA/FALLA), errores de validación y el hover de borrar en los chips de marca. Las píldoras usan el color al 16% como fondo y el color pleno como texto.
 
 ### Named Rules
+**The Control Edge Rule.** Un divisor puede ser casi invisible; el borde de un control no. Todo límite que indica "aquí se escribe o se elige" usa la línea de control (≥3:1), nunca la línea fina.
+
 **The Single Ink Rule.** El editor tiene una sola tinta de color. Si algo nuevo necesita destacar, usa la tinta de imprenta o su lavado. No se agrega un segundo acento.
 
 **The Neutral Table Rule.** El papel y la mesa que rodean la vista previa se quedan sin croma apreciable, porque el usuario juzga su paleta contra ellos. Cualquier calidez futura debe probarse contra esta regla.
@@ -255,7 +260,7 @@ Los controles deben sentirse **amables y juguetones**: invitan a moverlos y resp
 - **Icon buttons:** 32×30px y sin borde. El estado activo invierte los colores (fondo tinta, icono papel).
 
 ### Inputs / Fields
-- **Style:** papel de campo, línea fina, 6px de radio, 34px de alto y texto de 13px. Los campos hex usan mono en mayúsculas.
+- **Style:** papel de campo, línea de control, 6px de radio, 34px de alto y texto de 13px. Los campos hex usan mono en mayúsculas.
 - **Focus:** contorno de 2px en tinta de imprenta, separado 2px. Es el mismo anillo global para todo elemento enfocable.
 - **Error:** borde en rojo de prueba y mensaje de 12px debajo.
 - **Select:** el mismo papel y la misma línea, con una flecha SVG en tinta tenue.
@@ -265,8 +270,8 @@ Los controles deben sentirse **amables y juguetones**: invitan a moverlos y resp
 - **Thumb:** círculo de 16px en papel de campo con contorno de 2px en tinta. Crece al 120% mientras se arrastra.
 
 ### Segmented Controls & Toggles
-- **Segmented:** cápsula de papel de campo con 2px de relleno. La opción elegida se rellena en tinta con texto de papel (0.15s).
-- **Toggle:** riel de 34×20px en línea marcada que pasa a tinta de imprenta al activarse. El pulgar de 16px se desliza en 0.18s.
+- **Segmented:** cápsula de papel de campo con borde en línea de control y 2px de relleno. La opción elegida se rellena en tinta con texto de papel (0.15s).
+- **Toggle:** riel de 34×20px en línea de control que pasa a tinta de imprenta al activarse. El pulgar de 16px se desliza en 0.18s.
 
 ### Navigation (pestañas del escenario)
 - **Style:** texto de 13px y peso 600 en tinta tenue, sin fondo. En hover pasa a tinta.
