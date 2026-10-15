@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-15T00:00:00Z",
+  "title": "Design System: Design System Playground",
+  "extensions": {
+    "colorMeta": {
+      "printers-ink": { "role": "primary", "displayName": "Tinta de imprenta", "canonical": "oklch(43.9% 0.246 271.0)", "tonalRamp": ["#040034", "#14007A", "#270CC5", "#3C47EF", "#5F7AFF", "#90A9FF", "#C0CFFF", "#E8EEFF"] },
+      "printers-ink-wash": { "role": "primary", "displayName": "Lavado de tinta", "canonical": "#E2E1FB" },
+      "ink": { "role": "neutral", "displayName": "Tinta", "canonical": "oklch(19.6% 0.011 268.1)", "tonalRamp": ["#090B10", "#24262C", "#42454B", "#63666C", "#868990", "#ABAEB5", "#CED1D8", "#EBEEF6"] },
+      "ink-soft": { "role": "neutral", "displayName": "Tinta suave", "canonical": "#4F5560" },
+      "ink-faint": { "role": "neutral", "displayName": "Tinta tenue", "canonical": "#7D838E" },
+      "paper-bg": { "role": "neutral", "displayName": "Papel base", "canonical": "oklch(94.2% 0.005 247.9)", "tonalRamp": ["#090B0D", "#242729", "#434548", "#646669", "#87898C", "#ABAEB1", "#CED1D4", "#ECEFF2"] },
+      "paper-panel": { "role": "neutral", "displayName": "Papel de panel", "canonical": "#F6F7F8" },
+      "paper-field": { "role": "neutral", "displayName": "Papel de campo", "canonical": "#FFFFFF" },
+      "paper-canvas": { "role": "neutral", "displayName": "Mesa", "canonical": "#DCE0E4" },
+      "hairline": { "role": "neutral", "displayName": "Línea fina", "canonical": "#CDD2D8" },
+      "hairline-strong": { "role": "neutral", "displayName": "Línea marcada", "canonical": "#A9B0B9" },
+      "proof-green": { "role": "semantic", "displayName": "Verde de prueba", "canonical": "oklch(51.3% 0.118 153.7)", "tonalRamp": ["#001004", "#003016", "#00542B", "#1B7945", "#479E67", "#6EC48B", "#91E8AD", "#C5FFD6"] },
+      "proof-red": { "role": "semantic", "displayName": "Rojo de prueba", "canonical": "oklch(50.0% 0.182 29.5)", "tonalRamp": ["#1F0000", "#500000", "#860200", "#B7271C", "#E25242", "#FF8574", "#FFBFB4", "#FFE9E5"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Logo; 'Playground' en itálica y tinta de imprenta." },
+      "headline": { "displayName": "Headline", "purpose": "Títulos de cada vista del lienzo." },
+      "title": { "displayName": "Title (itálica)", "purpose": "Títulos de sección del panel, siempre en itálica con anotación mono a la derecha." },
+      "body": { "displayName": "Body", "purpose": "Texto base de la app; descripciones a 56ch como máximo." },
+      "control": { "displayName": "Control", "purpose": "Botones, pestañas, selects y opciones segmentadas." },
+      "label": { "displayName": "Label", "purpose": "Subgrupos, grupos de menú y encabezados de tabla, en mayúsculas." },
+      "annotation": { "displayName": "Annotation", "purpose": "Notas al margen en mono y mayúsculas espaciadas." },
+      "value": { "displayName": "Value", "purpose": "Toda medida legible: px, rem, ratios, hex, con cifras tabulares." }
+    },
+    "shadows": [
+      { "name": "floating", "value": "0 18px 40px -12px rgba(10,12,20,.35)", "purpose": "Menú de exportación; la única sombra proyectada." },
+      { "name": "selected-ring", "value": "inset 0 0 0 1px var(--line)", "purpose": "Pestaña activa del escenario." },
+      { "name": "anchor-mark", "value": "inset 0 0 0 2px currentColor", "purpose": "Muestra de color que coincide con el color de marca ingresado." }
+    ],
+    "motion": [
+      { "name": "control", "value": ".15s ease", "purpose": "Bordes, fondos y colores de botones, segmentados y pestañas." },
+      { "name": "toggle", "value": ".18s ease", "purpose": "Deslizamiento del pulgar del interruptor." },
+      { "name": "thumb-grow", "value": "transform .12s; scale(1.2) en :active", "purpose": "El pulgar del slider crece al arrastrar." },
+      { "name": "press", "value": "translateY(1px)", "purpose": "Todo botón se hunde un píxel al presionarse." },
+      { "name": "frame-resize", "value": "max-width .35s cubic-bezier(.2,.7,.2,1)", "purpose": "Cambio escritorio/móvil del marco de vista previa." },
+      { "name": "toast", "value": "opacity .2s, transform .25s (sube 20px)", "purpose": "Entrada y salida del toast." },
+      { "name": "reduced-motion", "value": "transition:none; animation:none", "purpose": "prefers-reduced-motion apaga todo el movimiento." }
+    ],
+    "breakpoints": [
+      { "name": "shell-stack", "value": "900px", "purpose": "Una columna y conmutador Editar / Vista previa." },
+      { "name": "menu-fixed", "value": "640px", "purpose": "El menú de exportación pasa a posición fija." },
+      { "name": "preview-mobile-frame", "value": "390px", "purpose": "Ancho del marco en modo móvil." },
+      { "name": "preview-max", "value": "1040px", "purpose": "Ancho máximo del marco de vista previa." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Botón por defecto del editor: papel de campo, línea fina, se hunde al presionar.",
+      "html": "<button class=\"ds-btn\" type=\"button\"><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M2.5 8a5.5 5.5 0 1 0 1.7-4\"/><path d=\"M2.5 2.5v3h3\"/></svg>Restablecer</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--line,#CDD2D8);background:var(--field,#FFFFFF);color:var(--ink,#13151A);border-radius:6px;cursor:pointer;font-family:Manrope,system-ui,sans-serif;font-size:13px;font-weight:600;white-space:nowrap;transition:border-color .15s,background .15s}.ds-btn svg{width:15px;height:15px}.ds-btn:hover{border-color:var(--line-strong,#A9B0B9)}.ds-btn:active{transform:translateY(1px)}.ds-btn:focus-visible{outline:2px solid var(--accent,#2E2AD6);outline-offset:2px}"
+    },
+    {
+      "name": "Botón sólido",
+      "kind": "button",
+      "refersTo": "button-solid",
+      "description": "La única acción principal visible (Exportar), en tinta de imprenta.",
+      "html": "<button class=\"ds-btn-solid\" type=\"button\"><svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><path d=\"M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 11v2.5h11V11\"/></svg>Exportar</button>",
+      "css": ".ds-btn-solid{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--accent,#2E2AD6);background:var(--accent,#2E2AD6);color:var(--accent-ink,#FFFFFF);border-radius:6px;cursor:pointer;font-family:Manrope,system-ui,sans-serif;font-size:13px;font-weight:600;transition:filter .15s}.ds-btn-solid svg{width:15px;height:15px}.ds-btn-solid:hover{filter:brightness(1.08)}.ds-btn-solid:active{transform:translateY(1px)}.ds-btn-solid:focus-visible{outline:2px solid var(--accent,#2E2AD6);outline-offset:2px}"
+    },
+    {
+      "name": "Campo de texto",
+      "kind": "input",
+      "refersTo": "input-text",
+      "description": "Campo del panel; la variante hex usa mono en mayúsculas.",
+      "html": "<input class=\"ds-field ds-field--mono\" type=\"text\" value=\"#2E5D4B\" aria-label=\"Color primario\">",
+      "css": ".ds-field{width:220px;height:34px;border:1px solid var(--line,#CDD2D8);border-radius:6px;background:var(--field,#FFFFFF);color:var(--ink,#13151A);padding:0 10px;font-family:Manrope,system-ui,sans-serif;font-size:13px}.ds-field--mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;text-transform:uppercase}.ds-field:focus-visible{outline:2px solid var(--accent,#2E2AD6);outline-offset:2px}.ds-field[aria-invalid=true]{border-color:var(--bad,#B42318)}"
+    },
+    {
+      "name": "Control segmentado",
+      "kind": "chip",
+      "refersTo": "segmented-option-selected",
+      "description": "Elección entre opciones cortas; la elegida se rellena en tinta.",
+      "html": "<div class=\"ds-seg\" role=\"radiogroup\"><label><input type=\"radio\" name=\"v\"><span>Editar</span></label><label><input type=\"radio\" name=\"v\" checked><span>Vista previa</span></label></div>",
+      "css": ".ds-seg{display:flex;width:260px;border:1px solid var(--line,#CDD2D8);border-radius:6px;background:var(--field,#FFFFFF);padding:2px;gap:2px;font-family:Manrope,system-ui,sans-serif}.ds-seg label{flex:1;position:relative}.ds-seg input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}.ds-seg span{display:block;text-align:center;padding:5px 8px;border-radius:4px;font-size:12px;font-weight:600;color:var(--ink-2,#4F5560);transition:background .15s,color .15s}.ds-seg label:hover span{color:var(--ink,#13151A)}.ds-seg input:checked+span{background:var(--ink,#13151A);color:var(--panel,#F6F7F8)}.ds-seg input:focus-visible+span{outline:2px solid var(--accent,#2E2AD6);outline-offset:1px}"
+    },
+    {
+      "name": "Pestañas del escenario",
+      "kind": "nav",
+      "refersTo": "tab-selected",
+      "description": "Navegación entre vistas del lienzo; la activa se recorta en papel de panel.",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\"><button class=\"ds-tab\" role=\"tab\" aria-selected=\"true\">Vista previa</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">Color</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">Escalas</button><button class=\"ds-tab\" role=\"tab\" aria-selected=\"false\">Tokens</button></div>",
+      "css": ".ds-tabs{display:flex;gap:2px;padding:8px;background:var(--bg,#E9ECEF)}.ds-tab{border:0;background:none;padding:6px 12px;border-radius:6px;font-family:Manrope,system-ui,sans-serif;font-size:13px;font-weight:600;color:var(--ink-3,#7D838E);cursor:pointer;transition:color .15s}.ds-tab:hover{color:var(--ink,#13151A)}.ds-tab[aria-selected=true]{color:var(--ink,#13151A);background:var(--panel,#F6F7F8);box-shadow:inset 0 0 0 1px var(--line,#CDD2D8)}.ds-tab:focus-visible{outline:2px solid var(--accent,#2E2AD6);outline-offset:2px}"
+    },
+    {
+      "name": "Interruptor",
+      "kind": "custom",
+      "refersTo": "toggle",
+      "description": "Toggle de 34×20 que se tiñe de tinta de imprenta al activarse.",
+      "html": "<label class=\"ds-toggle\">Botones en píldora<input type=\"checkbox\" checked></label>",
+      "css": ".ds-toggle{display:flex;width:240px;align-items:center;justify-content:space-between;gap:10px;font-family:Manrope,system-ui,sans-serif;font-size:13px;color:var(--ink-2,#4F5560);cursor:pointer}.ds-toggle input{appearance:none;width:34px;height:20px;border-radius:10px;background:var(--line-strong,#A9B0B9);position:relative;cursor:pointer;transition:background .15s;margin:0}.ds-toggle input::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--field,#FFFFFF);transition:transform .18s}.ds-toggle input:checked{background:var(--accent,#2E2AD6)}.ds-toggle input:checked::after{transform:translateX(14px)}.ds-toggle input:focus-visible{outline:2px solid var(--accent,#2E2AD6);outline-offset:2px}"
+    },
+    {
+      "name": "Título de sección (espécimen)",
+      "kind": "custom",
+      "refersTo": "title",
+      "description": "Firma del cuaderno: serif itálica con anotación mono a la derecha.",
+      "html": "<h2 class=\"ds-spec-h\">Tipografía <span>Escala</span></h2>",
+      "css": ".ds-spec-h{margin:0;width:300px;font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;font-style:italic;font-size:21px;line-height:1.1;color:var(--ink,#13151A);display:flex;justify-content:space-between;align-items:baseline}.ds-spec-h span{font-family:'JetBrains Mono',ui-monospace,monospace;font-style:normal;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3,#7D838E)}"
+    },
+    {
+      "name": "Píldoras de contraste",
+      "kind": "chip",
+      "refersTo": "pill",
+      "description": "Resultado de auditoría WCAG en mono; fondo al 16% del color de prueba.",
+      "html": "<span class=\"ds-pill ds-pill--ok\">AA 7.3</span> <span class=\"ds-pill ds-pill--bad\">FALLA 3.2</span>",
+      "css": ".ds-pill{display:inline-block;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:999px;letter-spacing:.04em}.ds-pill--ok{background:color-mix(in srgb,var(--ok,#1D7A46) 16%,transparent);color:var(--ok,#1D7A46)}.ds-pill--bad{background:color-mix(in srgb,var(--bad,#B42318) 16%,transparent);color:var(--bad,#B42318)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "El cuaderno de especímenes",
+    "overview": "El editor es un libro de muestras abierto sobre la mesa. Cada sección se titula como una lámina de espécimen tipográfico, en serif itálica. Cada valor se anota al margen en tipografía mono, y cada muestra de color lleva su medida de contraste como si fuera un pie de foto. Las láminas son el sistema que el usuario genera. El cuaderno las presenta, las mide y las cataloga, pero nunca compite con ellas: la vista previa (`.ds`) usa solo los tokens del usuario, y el editor la enmarca en papel gris neutro.\n\nLa densidad es de herramienta de mano: cuerpo a 14px, controles a 13px, anotaciones a 11px, todo en un panel de 340px. El ánimo que buscamos es **cálido, curioso y lúdico**. Es una invitación a mover cosas y ver qué pasa, no un tablero de control. Hoy ese ánimo vive sobre todo en la tipografía (la itálica de Cormorant, la palabra *Playground* en tinta) y en los controles que responden al tacto. La paleta todavía es de grises fríos.\n\n**Rumbo (provisional):** los cambios futuros deben acercar el editor a ese ánimo cálido y lúdico. Puede ser con papel menos azulado, microcopy con más voz o interacciones con más carácter, sin perder la neutralidad que necesita la vista previa para juzgar color con honestidad. Esto es dirección, no un token: la paleta actual sigue siendo la referencia normativa hasta que se cambie a propósito.",
+    "keyCharacteristics": [
+      "Títulos de sección en Cormorant Garamond itálica, como láminas de un espécimen.",
+      "Anotaciones y valores en JetBrains Mono, en mayúsculas espaciadas o con cifras tabulares.",
+      "Un solo acento, tinta de imprenta índigo, y papel en capas planas.",
+      "Profundidad por tono y línea fina, no por sombra.",
+      "Modo claro y oscuro completos, con los mismos roles."
+    ],
+    "rules": [
+      { "name": "The Single Ink Rule", "body": "El editor tiene una sola tinta de color. Si algo nuevo necesita destacar, usa la tinta de imprenta o su lavado. No se agrega un segundo acento.", "section": "colors" },
+      { "name": "The Neutral Table Rule", "body": "El papel y la mesa que rodean la vista previa se quedan sin croma apreciable, porque el usuario juzga su paleta contra ellos. Cualquier calidez futura debe probarse contra esta regla.", "section": "colors" },
+      { "name": "The Specimen Title Rule", "body": "Todo título de sección del panel va en Cormorant itálica con una anotación mono a la derecha. Esa pareja es la firma del cuaderno; no se reemplaza por sans en negrita.", "section": "typography" },
+      { "name": "The Measured Value Rule", "body": "Todo número que el usuario lee como medida (px, rem, ratios, hex, porcentajes) va en mono con cifras tabulares.", "section": "typography" },
+      { "name": "The Flat Paper Rule", "body": "Las superficies quedan planas en reposo. Una sombra proyectada significa \"esto flota encima\" (menú o toast), nunca \"esto es importante\".", "section": "elevation" }
+    ],
+    "dos": [
+      "Do titular cada sección nueva del panel con Cormorant itálica de 21px y una anotación mono en mayúsculas a la derecha.",
+      "Do poner todo número medible en JetBrains Mono con cifras tabulares.",
+      "Do usar la tinta de imprenta (#2E2AD6 / #9592FF) para la única acción principal visible y para el foco. Para el resto, usar su lavado o la tinta neutra.",
+      "Do separar planos con tono de papel y línea fina de 1px antes que con sombra.",
+      "Do dar a cada control nuevo una respuesta táctil (hundirse 1px, crecer o deslizarse) en 0.12–0.2s, y respetar `prefers-reduced-motion`, que ya apaga todas las transiciones.",
+      "Do definir cada color nuevo para claro y oscuro a la vez, bajo `@media (prefers-color-scheme: dark)` y `[data-theme=\"dark\"]`."
+    ],
+    "donts": [
+      "Don't dejar que estilos del editor entren en la vista previa: dentro de `.ds` solo se usan variables `--ds-*`.",
+      "Don't agregar un segundo color de acento al editor ni teñir el papel y la mesa que rodean la vista previa.",
+      "Don't usar sombras proyectadas en paneles, láminas o tarjetas del editor.",
+      "Don't usar la tinta tenue (#7D838E) para texto que el usuario necesita leer: sobre papel da solo 3.2–3.8:1 y no pasa WCAG AA en tamaños pequeños. Hoy se usa así en anotaciones de 10.5–11px; es deuda conocida, no un patrón a copiar.",
+      "Don't reemplazar la serif itálica de los títulos por sans en negrita para \"modernizar\" el editor."
+    ]
+  }
+}
