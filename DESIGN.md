@@ -225,7 +225,7 @@ Es una herramienta de dos planos. En escritorio hay una cuadrícula de `340px | 
 
 El ritmo del panel es de secciones con 18px arriba y 20px a los lados, separadas por línea fina y con 14px entre controles. Los controles van en una cuadrícula de etiqueta y valor (`1fr auto`), y los pares se ponen lado a lado con 10px de separación. El lienzo tiene 28px arriba y 24px a los lados.
 
-Hay dos cortes principales. A 900px o menos, la cuadrícula pasa a una sola columna y aparece un conmutador fijo "Editar / Vista previa" que muestra uno de los dos planos. Los márgenes bajan a 16px. A 640px o menos, el menú de exportación pasa a posición fija con 16px de margen a cada lado.
+Hay dos cortes principales. A 900px o menos, la cuadrícula pasa a una sola columna y aparece un conmutador fijo "Editar / Vista previa" que muestra uno de los dos planos. Los márgenes bajan a 16px. Las acciones de la cabecera pasan a su propia fila, con el selector de presets elástico, y a 480px o menos "Restablecer" queda solo con su icono. La fila del logo tiene altura fija (32px) para que la carga de fuentes no mueva la página. A 640px o menos, el menú de exportación pasa a posición fija con 16px de margen a cada lado.
 
 Con puntero táctil (`pointer:coarse`), los controles crecen a 44px de alto (botones, selects, campos, pestañas, opciones segmentadas, interruptores) y el pulgar de los sliders a 24px, sin cambiar la densidad que se ve con ratón. Las muestras de color pasan de 11 a 6 columnas por debajo de 700px de marco, y a 4 por debajo de 520px.
 

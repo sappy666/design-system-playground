@@ -42,7 +42,7 @@ html,.panel,.scroller,pre.code,.tablewrap{scrollbar-color:var(--line-strong) tra
 /* ---------- App shell ---------- */
 .app{display:grid;grid-template-rows:auto 1fr;height:100%;min-height:0}
 .top{display:flex;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
-.logo{display:flex;align-items:baseline;gap:10px;min-width:0;margin-right:auto}
+.logo{display:flex;align-items:baseline;gap:10px;min-width:0;margin-right:auto;height:32px;padding-top:3px}
 .logo h1{margin:0;font-family:var(--f-display);font-weight:500;font-size:26px;line-height:1;letter-spacing:-.01em}
 .logo h1 em{font-style:italic;color:var(--accent)}
 .logo small{font-family:var(--f-mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
@@ -173,6 +173,8 @@ pre.code .c{color:var(--ink-3)} pre.code .p{color:var(--accent)} pre.code .v{col
 /* =========================================================
    Preview: todo dentro de .ds usa sólo los tokens generados
    ========================================================= */
+/* Oculta la vista previa hasta que el JS aplique los tokens: evita que salte al cargar. */
+.ds:not([data-ready]){visibility:hidden}
 .ds{background:var(--ds-bg);color:var(--ds-fg);font-family:var(--ds-font-b);font-size:var(--ds-text-base);line-height:var(--ds-leading);border-radius:10px;overflow:hidden;border:1px solid var(--line);transition:background .25s,color .25s}
 .ds.is-theming *{transition:background-color .2s,border-color .2s,color .2s}
 .ds h1,.ds h2,.ds h3{font-family:var(--ds-font-d);font-weight:var(--ds-head-weight);letter-spacing:var(--ds-tracking);line-height:1.08;margin:0;text-wrap:balance}
@@ -260,6 +262,9 @@ pre.code .c{color:var(--ink-3)} pre.code .p{color:var(--accent)} pre.code .v{col
   .panel{border-right:0;overflow:visible}
   .scroller{padding:16px}
   .top{padding:12px 16px}
+  /* Acciones en fila propia y selector elástico: la cabecera no cambia de forma al cargar fuentes u opciones. */
+  .top-actions{width:100%;flex-wrap:nowrap}
+  #preset{flex:1 1 auto;min-width:0}
   .stagebar{padding:10px 16px}
   .sec{padding:16px}
   .sheet{padding:16px}
@@ -281,6 +286,9 @@ pre.code .c{color:var(--ink-3)} pre.code .p{color:var(--accent)} pre.code .v{col
   input[type=range]::-webkit-slider-thumb{width:24px;height:24px;margin-top:-10px}
   input[type=range].tall::-webkit-slider-thumb{margin-top:-7px}
   input[type=range]::-moz-range-thumb{width:24px;height:24px}
+}
+@media (max-width:480px){
+  .btn-txt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 

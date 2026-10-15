@@ -177,6 +177,7 @@ function render() {
     sys = compute(state);
     ensureFonts([state.type.display, state.type.body]);
     applyVars();
+    $("ds").dataset.ready = "";
     document.querySelectorAll("[data-out]").forEach((o) => (o.textContent = fmtOut[o.dataset.fmt](get(state, o.dataset.out))));
     document.querySelectorAll('[data-bind="name"]').forEach((e) => (e.textContent = state.name));
     [["p", "primary"], ["a", "accent"]].forEach(([pfx, k]) => {
